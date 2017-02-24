@@ -1,37 +1,40 @@
 var likesCounter=0;
-$(document).ready(function(){
-console.log("works");
+var peopleArray = [];
 
+$(document).ready(function(){
+  console.log("works");
+
+  $('.fullPeopleContainer').on('click', '.likeButton', function(){
+    // likesCounter++;
+    console.log("clicked "+ $(this).data('name'));
+  });
 
   $.ajax({
-        type: 'GET',
-        url: '/app',
-        success: function(response){
-          var peopleArray = response;
-          for (var i = 0; i < peopleArray.length; i++) {
-            var nameDiv = peopleArray[i].name;
-            var bioDiv = peopleArray[i].bio;
-            var imageDiv = peopleArray[i].image;
-            var numberLikes = peopleArray[i].likes;
-            $('.name').append('<ul>' + nameDiv + '<br>' + bioDiv +  '<br>' + '<div>' +imageDiv +'</div>'+ '<div>' + numberLikes + '</div>'+'</ul>');
-            $('.dynamicButton').append('<button type="button" id="likeButton" name="button" data-name="'+nameDiv+'">dynamic likes</button>');
-            $('.pagePics').append('<img src="/assets/images/' + peopleArray[i].image + '" alt="peopleImage" width="100px" height="100px" />');
+    type: 'GET',
+    url: '/bios',
+    success: function(response){
+      peopleArray = response;
+      for (var i = 0; i < peopleArray.length; i++) {
+        //var fullPerson = nameTest + biosTest + buttonTest + picsTest;
+        var name = peopleArray[i].name;
+        var bio = peopleArray[i].bio;
+        var imageTag = '<img src="/assets/images/' + peopleArray[i].image + '" alt="peopleImage" width="100px" height="100px" />';
+        var numberDiv = peopleArray[i].likes;
+        var buttonDiv = '<button type="button" class="likeButton" name="button" data-name="'+name+'">Awesome Likes</button>';
+        $('.fullPeopleContainer').append( name + " "+ '<br>' + bio + '<br>'+imageTag +'<br>'+ buttonDiv+"  " +numberDiv + '<br>'+ '<br>');
 
-          }
-}
-});
+      }
+    }//ends success
+  });//ends ajax
 
-$('#likeButton').on('click', function(){
-// likesCounter++;
-console.log("clicked"+ $(this).data('name'));
-});
-// $.ajax({
-//       type: 'POST',
-//       url: '/app',
-//       data: likesCounter,
-//       success: function(response){
-// }
-// }); // end of success
+
+  // $.ajax({
+  //       type: 'POST',
+  //       url: '/app',
+  //       data: likesCounter,
+  //       success: function(response){
+  // }
+  // }); // end of success
 
 
 
